@@ -36,3 +36,29 @@ cards.forEach(card => {
   card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
   observer.observe(card);
 });
+
+// CAROUSEL
+const track = document.getElementById('carousel-track');
+const slides = document.querySelectorAll('.slide');
+const dotsWrap = document.getElementById('carousel-dots');
+let current = 0;
+
+slides.forEach((_, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.addEventListener('click', () => goTo(i));
+  dotsWrap.appendChild(dot);
+});
+
+function goTo(index) {
+  current = (index + slides.length) % slides.length;
+  track.style.transform = `translateX(-${current * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === current);
+  });
+}
+
+document.getElementById('prev').addEventListener('click', () => goTo(current - 1));
+document.getElementById('next').addEventListener('click', () => goTo(current + 1));
+
+setInterval(() => goTo(current + 1), 3500);
